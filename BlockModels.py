@@ -1,5 +1,4 @@
-import cgi, datetime
-from google.appengine.ext import ndb
+import cgi, datetime, yaml
 from google.appengine.ext import db
 
 # File Index
@@ -15,14 +14,15 @@ from google.appengine.ext import db
 
 
 # Model for entering blocks into the datastore
-class Entry(ndb.Model):
-    block = ndb.StringProperty(indexed=False)
-    sTime = ndb.TimeProperty()
-    eTime = ndb.TimeProperty()
+class Entry(db.Model):
+    block = db.StringProperty(indexed=False)
+    sTime = db.TimeProperty()
+    day = db.IntegerProperty()
+    eTime = db.TimeProperty()
     
 # Model for checking whether to add the hardcoded blocks to the datastore
 class doRun(db.Model):
-    runTrue = ndb.BooleanProperty()
+    runTrue = db.BooleanProperty()
 
 # Returns a formated version of time
 def createTime(hour, minute):
@@ -42,9 +42,6 @@ def now(sTime, eTime):
         return False
 
 
-
-# Hardcoded Blocks
-
 # This codeblock checks whether a certain datastore entry exists, determining whether to add the hardcoded blocks to the datastore or not
 q = doRun.all()
 result = q.get()
@@ -53,311 +50,21 @@ if not result:
     hasRun = doRun(runTrue = True)
     hasRun.put()
 
-
-
-
-# Monday
-    # Create the formated times
-    sTime = datetime.time(8, 00)
-    eTime = datetime.time(8, 45)
-    # Store the instance of the class Entry in entries, with entered data
-    entries = Entry (block = "Mon_Block 1",
-                    sTime = sTime,
-                    eTime = eTime)
-    # Stores the data that entries contains into the datastore
-    entries.put()
-
-
-
-    sTime = datetime.time(8, 50)
-    eTime = datetime.time(9, 35)
-    entries = Entry (block = "Mon_Block 2",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
+    # Opens the tree.yaml file and saves the contents to doc
+    with open('RegBlocks.yaml', 'r') as f:
+        doc = yaml.load(f)
     
-    
-    
-    sTime = datetime.time(9, 40)
-    eTime = datetime.time(10, 15)
-    entries = Entry (block = "Mon_Tutorial",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-
-
-
-    sTime = datetime.time(10, 20)
-    eTime = datetime.time(11, 05)
-    entries = Entry (block = "Mon_Block 3",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-
-
-
-    sTime = datetime.time(11, 10)
-    eTime = datetime.time(12, 30)
-    entries = Entry (block = "Mon_Block 4/Lunch",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-
-
-
-    sTime = datetime.time(12, 35)
-    eTime = datetime.time(13, 20)
-    entries = Entry (block = "Mon_Block 5",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-
-
-
-    sTime = datetime.time(13, 25)
-    eTime = datetime.time(14, 10)
-    entries = Entry (block = "Mon_Block 6",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-
-
-
-    sTime = datetime.time(14, 15)
-    eTime = datetime.time(15, 00)
-    entries = Entry (block = "Mon_Block 7",
-                    sTime = sTime,
-                    eTime = eTime)
-
-
-
-# Tuesday
-
-    sTime = datetime.time(8, 00)
-    eTime = datetime.time(9, 05)
-    entries = Entry (block = "Tues_Block 2",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-
-
-
-    sTime = datetime.time(9, 10)
-    eTime = datetime.time(9, 45)
-    entries = Entry (block = "Tues_Assembly",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-
-
-
-    sTime = datetime.time(9, 50)
-    eTime = datetime.time(10, 55)
-    entries = Entry (block = "Tues_Block 4",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-
-
-
-    sTime = datetime.time(11, 00)
-    eTime = datetime.time(12, 40)
-    entries = Entry (block = "Tues_Block 3/Lunch",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-
-
-
-    sTime = datetime.time(12, 45)
-    eTime = datetime.time(13, 50)
-    entries = Entry (block = "Tues_Block 7",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-
-
-
-    sTime = datetime.time(13, 55)
-    eTime = datetime.time(15, 00)
-    entries = Entry (block = "Tues_Block 6",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-
-
-
-# Wednesday
-
-    sTime = datetime.time(8, 30)
-    eTime = datetime.time(9, 35)
-    entries = Entry (block = "Wed_Block 1",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-    
-    
-
-    sTime = datetime.time(9, 40)
-    eTime = datetime.time(10, 10)
-    entries = Entry (block = "Wed_Advisory/Grade Meeting",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-
-
-
-    sTime = datetime.time(10, 15)
-    eTime = datetime.time(11, 20)
-    entries = Entry (block = "Wed_Block 2",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-
-
-
-    sTime = datetime.time(11, 25)
-    eTime = datetime.time(13, 05)
-    entries = Entry (block = "Wed_Block 5/Lunch",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-
-
-
-    sTime = datetime.time(13, 10)
-    eTime = datetime.time(13, 50)
-    entries = Entry (block = "Wed_TASC/Symposium",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-
-
-
-    sTime = datetime.time(13, 55)
-    eTime = datetime.time(15, 00)
-    entries = Entry (block = "Wed_Block 6",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-
-
-
-# Thursday
-
-    sTime = datetime.time(8, 00)
-    eTime = datetime.time(9, 05)
-    entries = Entry (block = "Thurs_Block 3",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-
-
-
-    sTime = datetime.time(9, 10)
-    eTime = datetime.time(9, 45)
-    entries = Entry (block = "Thurs_Assembly",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-
-
-
-    sTime = datetime.time(9, 50)
-    eTime = datetime.time(10, 55)
-    entries = Entry (block = "Thurs_Block 1",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-
-
-
-    sTime = datetime.time(11, 00)
-    eTime = datetime.time(12, 40)
-    entries = Entry (block = "Thurs_Block 4/Lunch",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-
-
-
-    sTime = datetime.time(12, 45)
-    eTime = datetime.time(13, 50)
-    entries = Entry (block = "Thurs_Block 5",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-
-
-
-    sTime = datetime.time(13, 55)
-    eTime = datetime.time(15, 00)
-    entries = Entry (block = "Thurs_Block 7",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-
-
-
-# Friday
-
-    sTime = datetime.time(8, 30)
-    eTime = datetime.time(9, 15)
-    entries = Entry (block = "Fri_Block 2",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-
-
-
-    sTime = datetime.time(9, 20)
-    eTime = datetime.time(10, 05)
-    entries = Entry (block = "Fri_Block 1",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-
-
-
-    sTime = datetime.time(10, 10)
-    eTime = datetime.time(10, 55)
-    entries = Entry (block = "Fri_Block 3",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-
-
-
-    sTime = datetime.time(11, 00)
-    eTime = datetime.time(12, 30)
-    entries = Entry (block = "Fri_Block 4/Lunch",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-    
-    
-
-    sTime = datetime.time(12, 35)
-    eTime = datetime.time(13, 20)
-    entries = Entry (block = "Fri_Block 6",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-
-
-
-    sTime = datetime.time(13, 25)
-    eTime = datetime.time(14, 10)
-    entries = Entry (block = "Fri_Block 7",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
-
-
-
-    sTime = datetime.time(14, 15)
-    eTime = datetime.time(15, 00)
-    entries = Entry (block = "Fri_Block 5",
-                    sTime = sTime,
-                    eTime = eTime)
-    entries.put()
+    # For every entry in the 'treeroot' directory of the tree.yaml file, do this:
+    for x in doc['treeroot']:
+        # Take the variables 'shour' and 'smin' and create a formated time stored in sTime
+        sTime = datetime.time(doc['treeroot'][x]['shour'], doc['treeroot'][x]['smin'], 0)
+        # Take the variables 'ehour' and 'emin' and create a formated time stored in eTime
+        eTime = datetime.time(doc['treeroot'][x]['ehour'], doc['treeroot'][x]['emin'], 0)
+        
+        # Store the instance of Entry with the inputed data into entries
+        entries = Entry (block = doc['treeroot'][x]['name'],
+                         sTime = sTime,
+                         day = doc['treeroot'][x]['day'],
+                         eTime = eTime)
+        # Store the data that entries contains into the datastore
+        entries.put()
